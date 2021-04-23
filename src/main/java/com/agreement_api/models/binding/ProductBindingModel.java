@@ -1,0 +1,47 @@
+package com.agreement_api.models.binding;
+
+import com.google.gson.annotations.Expose;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductBindingModel {
+
+    @Expose
+    private String name;
+    @Expose
+    private BigDecimal price;
+    @Expose
+    private List<ProductBindingModel> products;
+
+    public ProductBindingModel(String name, BigDecimal price, List<ProductBindingModel> products) {
+        this.name = name;
+        this.price = price;
+        this.products = new ArrayList<>(products);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public List<ProductBindingModel> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductBindingModel> products) {
+        this.products = products;
+    }
+}
