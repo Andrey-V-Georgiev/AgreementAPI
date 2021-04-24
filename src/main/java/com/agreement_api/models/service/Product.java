@@ -16,6 +16,10 @@ public class Product extends Identity {
     public Product() {
     }
 
+    public Product(String id) {
+        super(id);
+    }
+
     public Product(String id, String dirPath, String name, List<Product> products, BigDecimal price) {
         super(id, dirPath);
         this.name = name;
@@ -55,12 +59,17 @@ public class Product extends Identity {
         this.products = products;
     }
 
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+
     public String toStringAgreement() {
 
         StringBuilder sb = new StringBuilder();
 
         /* Construct String representation of Product object */
-        sb.append(String.format("%s: %s\n", GlobalConstants.NAME, this.name));
+        sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_ID, super.getId()));
+        sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_NAME, this.name));
         sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_PRICE, this.price));
         sb.append(GlobalConstants.SEPARATOR);
 
@@ -73,9 +82,9 @@ public class Product extends Identity {
         StringBuilder sb = new StringBuilder();
 
         /* Construct String representation of Product object */
-        sb.append(String.format("%s: %s\n", GlobalConstants.ID, super.getId()));
+        sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_ID, super.getId()));
         sb.append(String.format("%s: %s\n", GlobalConstants.PARENT_ID, this.parent.getId()));
-        sb.append(String.format("%s: %s\n", GlobalConstants.NAME, this.name));
+        sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_NAME, this.name));
         sb.append(String.format("%s: %s\n", GlobalConstants.PRODUCT_PRICE, this.price));
         sb.append(GlobalConstants.SEPARATOR);
 

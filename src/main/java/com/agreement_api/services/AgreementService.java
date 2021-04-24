@@ -1,9 +1,10 @@
 package com.agreement_api.services;
 
-import com.agreement_api.models.binding.AgreementBindingModel;
+import com.agreement_api.models.service.Agreement;
 
 import java.io.IOException;
 
 public interface AgreementService {
-    void storeInput(AgreementBindingModel agreementBindingModel) throws IOException;
+
+    Agreement findAgreement(String dirPath) throws IOException;
 }

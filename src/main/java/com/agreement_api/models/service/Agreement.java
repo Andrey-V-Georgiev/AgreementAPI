@@ -26,6 +26,10 @@ public class Agreement extends Identity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setName() {
         LocalDateTime now = LocalDateTime.now();
         String dateFormatted = String.format("%s%s%s", now.getDayOfMonth(), now.getMonth(), now.getYear());
@@ -48,15 +52,19 @@ public class Agreement extends Identity {
         this.products = products;
     }
 
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
 
         /* Construct String representation of Agreement object */
-        sb.append(String.format("%s: %s\n", GlobalConstants.ID, super.getId()));
-        sb.append(String.format("%s: %s\n", GlobalConstants.NAME, this.name));
-        sb.append(String.format("%s: %s\n", GlobalConstants.SIGNATURE_OWNER_NAME, this.signBy));
+        sb.append(String.format("%s: %s\n", GlobalConstants.AGREEMENT_ID, super.getId()));
+        sb.append(String.format("%s: %s\n", GlobalConstants.AGREEMENT_NAME, this.name));
+        sb.append(String.format("%s: %s\n", GlobalConstants.SIGNATURE_OWNER, this.signBy));
         sb.append(String.format("%s:\n", GlobalConstants.AGREEMENT_PRODUCTS));
         sb.append(GlobalConstants.SEPARATOR);
         if (this.products.size() > 0) {

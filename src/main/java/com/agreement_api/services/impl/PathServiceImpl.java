@@ -1,16 +1,21 @@
-package com.agreement_api.utils.impl;
+package com.agreement_api.services.impl;
 
 import com.agreement_api.constants.GlobalConstants;
 import com.agreement_api.models.service.Agreement;
 import com.agreement_api.models.service.Product;
-import com.agreement_api.utils.PathUtil;
-import org.springframework.stereotype.Component;
+import com.agreement_api.services.PathService;
+import org.springframework.stereotype.Service;
 
-@Component
-public class PathUtilImpl implements PathUtil {
+@Service
+public class PathServiceImpl implements PathService {
     @Override
     public String generateDirPath(Agreement agreement) {
         return String.format("%s\\%s", GlobalConstants.ROOT_FOLDER_PATH, agreement.getId());
+    }
+
+    @Override
+    public String generateDirPath(String agreementFolderName) {
+        return String.format("%s\\%s", GlobalConstants.ROOT_FOLDER_PATH, agreementFolderName);
     }
 
     @Override

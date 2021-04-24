@@ -9,6 +9,10 @@ public abstract class Identity {
     public Identity() {
     }
 
+    public Identity(String id) {
+        this.id = id;
+    }
+
     public Identity(String id, String dirPath) {
         this.id = id;
         this.dirPath = dirPath;
