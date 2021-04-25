@@ -1,6 +1,7 @@
 package com.agreement_api.models.service;
 
 import com.agreement_api.constants.GlobalConstants;
+import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,8 +9,11 @@ import java.util.List;
 
 public class Agreement extends Identity {
 
+    @Expose
     private String name;
+    @Expose
     private String signBy;
+    @Expose
     private List<Product> products;
 
     public Agreement() {

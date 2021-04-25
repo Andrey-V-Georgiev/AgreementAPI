@@ -51,13 +51,16 @@ public class AppServiceImpl implements AppService {
 
         /* Get Agreement object */
         Agreement agreement = this.agreementService.findAgreement(dirPath);
-        System.out.println();
 
-        /* Get Product objects */
-        List<Product> products = this.productService.findProducts(dirPath);
-        System.out.println();
+        /* Get Agreement products */
+        List<Product> productsFirstLevel = this.productService.findFirstLevelProducts(dirPath);
 
-        return null;
+        /* Set all products to Agreement */
+        agreement.setProducts(productsFirstLevel);
+
+        /* Convert to JSON */
+        String agreementJSON = this.gson.toJson(agreement);
+        return agreementJSON;
     }
 
     @Override
@@ -105,6 +108,7 @@ public class AppServiceImpl implements AppService {
 
         /* Sign product to mapping and product registers */
         this.registerService.signProductToProductRegister(currentProduct);
+
         this.registerService.signProductToMappingRegister(currentProduct);
 
         /* Get deeper */
@@ -118,7 +122,7 @@ public class AppServiceImpl implements AppService {
         }
 
         /* Call the function recursively */
-        this.storeProductsToFileSystem(products, ++index, currentProduct);
+        this.storeProductsToFileSystem(products, ++index, parent);
     }
 
     private void setAgreementFields(Agreement agreement) throws IOException {

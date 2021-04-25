@@ -6,6 +6,10 @@ import com.agreement_api.models.service.Product;
 import com.agreement_api.services.PathService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PathServiceImpl implements PathService {
     @Override
@@ -20,13 +24,14 @@ public class PathServiceImpl implements PathService {
 
     @Override
     public String generateAgreementFilePath(Agreement agreement) {
-        return  String.format("%s\\%s.txt", this.generateDirPath(agreement), agreement.getName());
+        return String.format("%s\\%s.txt", this.generateDirPath(agreement), agreement.getName());
     }
 
     @Override
     public String generateProductFilePath(Product product) {
-        /* First is parent id separated by space and second is product id */
-        String fileNameProduct = String.format("%s %s", product.getParent().getId(), product.getId());
-        return  String.format("%s\\%s.txt", product.getDirPath(), fileNameProduct);
+        /* First is productID separated by space and second is parentID */
+        //String fileNameProduct = String.format("%s__%s", product.getId(), product.getParent().getId());
+        String fileNameProduct = String.format("%s__%s", product.getName(), product.getParent().getId());
+        return String.format("%s\\%s.txt", product.getDirPath(), fileNameProduct);
     }
 }

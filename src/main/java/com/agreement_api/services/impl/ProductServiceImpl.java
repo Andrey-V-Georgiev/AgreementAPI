@@ -2,9 +2,7 @@ package com.agreement_api.services.impl;
 
 import com.agreement_api.constants.GlobalConstants;
 import com.agreement_api.models.service.Product;
-import com.agreement_api.services.FileService;
-import com.agreement_api.services.ProductService;
-import com.agreement_api.services.RegisterService;
+import com.agreement_api.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +19,17 @@ public class ProductServiceImpl implements ProductService {
 
     private final RegisterService registerService;
     private final FileService fileService;
+    private final AgreementService agreementService;
 
     @Autowired
-    public ProductServiceImpl(RegisterService registerService, FileService fileService) {
+    public ProductServiceImpl(RegisterService registerService, FileService fileService, AgreementService agreementService) {
         this.registerService = registerService;
         this.fileService = fileService;
+        this.agreementService = agreementService;
     }
 
     @Override
-    public List<Product> findProducts(String dirPath) throws IOException {
+    public List<Product> findFirstLevelProducts(String dirPath) throws IOException {
 
 
         /* Read products register to get paths */
@@ -52,14 +52,33 @@ public class ProductServiceImpl implements ProductService {
             products.add(product);
         }
 
-        /* Attach EVERY Product to his parent PRODUCTS COLLECTION */
+        /**
+         * Attach nested products to first level products
+         * who are directly in the Agreement product collection
+         **/
+        String agreementId = this.agreementService.getAgreementID(dirPath);
         for (Product product : products) {
             String parentId = product.getParent().getId();
-            String parentFilePath = mappingRegister.get(parentId);
-            Product parentProduct = this.findProduct(parentFilePath);
-            parentProduct.addProduct(product);
+
+            if(!parentId.equals(agreementId)) {
+                Product parentProduct = products
+                        .stream()
+                        .filter(p -> p.getId().equals(parentId))
+                        .collect(Collectors.toList()).get(0);
+
+                parentProduct.addProduct(product);
+            }
         }
-        return products;
+
+        /**
+         *  First level products are those that attend directly in the Agreement products collection
+         **/
+        List<Product> productsFirstLevel = products
+                .stream()
+                .filter(p->p.getParent().getId().equals(agreementId))
+                .collect(Collectors.toList());
+
+        return productsFirstLevel;
     }
 
     @Override
@@ -73,7 +92,10 @@ public class ProductServiceImpl implements ProductService {
     private Product convertFileLinesToProductObject(List<String> productFileLines) {
         Product product = new Product();
         for (String line : productFileLines) {
+
             List<String> tokens = Arrays.stream(line.split(":")).map(String::trim).collect(Collectors.toList());
+            product.setProducts(new ArrayList<>());
+
             switch (tokens.get(0)) {
 
                 case GlobalConstants.PRODUCT_ID:

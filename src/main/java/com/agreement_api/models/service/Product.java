@@ -1,6 +1,7 @@
 package com.agreement_api.models.service;
 
 import com.agreement_api.constants.GlobalConstants;
+import com.google.gson.annotations.Expose;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,9 +9,13 @@ import java.util.List;
 
 public class Product extends Identity {
 
+    @Expose
     private String name;
+    @Expose
     private Identity parent;
+    @Expose
     private List<Product> products;
+    @Expose
     private BigDecimal price;
 
     public Product() {

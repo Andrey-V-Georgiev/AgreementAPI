@@ -7,4 +7,6 @@ import java.io.IOException;
 public interface AgreementService {
 
     Agreement findAgreement(String dirPath) throws IOException;
+
+    String getAgreementID(String dirPath);
 }

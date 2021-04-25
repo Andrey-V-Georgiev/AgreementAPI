@@ -34,9 +34,9 @@ public class AppController {
     public ResponseEntity<Object> findAgreementByFilePath(
             @PathVariable("agreement-folder-name") String agreementFolderName) throws IOException {
 
-        String agreementJson = this.appService.findAgreementAsJSON(agreementFolderName);
+        String agreementJSON = this.appService.findAgreementAsJSON(agreementFolderName);
 
-        return ResponseEntity.ok(agreementJson);
+        return ResponseEntity.ok(agreementJSON);
     }
 
     @PostMapping("/store")

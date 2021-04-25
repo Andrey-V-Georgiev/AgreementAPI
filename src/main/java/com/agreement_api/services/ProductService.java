@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<Product> findProducts(String dirPath) throws IOException;
+    List<Product> findFirstLevelProducts(String dirPath) throws IOException;
 
     Product findProduct(String filePath) throws IOException;
 }

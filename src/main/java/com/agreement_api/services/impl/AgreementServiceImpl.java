@@ -25,6 +25,18 @@ public class AgreementServiceImpl implements AgreementService {
     }
 
     @Override
+    public String getAgreementID(String dirPath) {
+        /**
+         * Get the name of folder that collects the agreement, all the products and the registers
+         * this folder is named like the ID of the agreement
+         */
+        List<String> tokens = Arrays.stream(dirPath.split("\\\\")).collect(Collectors.toList());
+        String agreementID = tokens.get(tokens.size() - 1);
+        return agreementID;
+    }
+
+
+    @Override
     public Agreement findAgreement(String dirPath) throws IOException {
 
         /* Read Agreement register to get register path */

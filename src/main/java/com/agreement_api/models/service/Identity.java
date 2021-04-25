@@ -1,9 +1,13 @@
 package com.agreement_api.models.service;
 
 
+import com.google.gson.annotations.Expose;
+
 public abstract class Identity {
 
+    @Expose
     private String id;
+    @Expose
     private String dirPath;
 
     public Identity() {
