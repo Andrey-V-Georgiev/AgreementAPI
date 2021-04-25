@@ -9,7 +9,7 @@ Every Product has "products" property as well.
 
 ## Requirements
 
-Windows OS with partial (C:)
+Windows OS with partition (C:)
 
 ## Details 
 
