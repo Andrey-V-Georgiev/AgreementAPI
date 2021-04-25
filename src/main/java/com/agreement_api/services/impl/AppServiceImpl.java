@@ -114,7 +114,7 @@ public class AppServiceImpl implements AppService {
             this.setProductFields(nestedProduct, currentProduct, currentProduct.getDirPath());
 
             /* Recursive call */
-            this.storeProductsToFileSystem(nestedProducts, 0, nestedProduct);
+            this.storeProductsToFileSystem(nestedProducts, 0, currentProduct);
         }
 
         /* Call the function recursively */
