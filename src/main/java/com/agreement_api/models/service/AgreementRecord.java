@@ -2,17 +2,17 @@ package com.agreement_api.models.service;
 
 import com.google.gson.annotations.Expose;
 
-public class Path {
+public class AgreementRecord {
 
     @Expose
     private String agreementFolderName;
     @Expose
     private String fullPath;
 
-    public Path() {
+    public AgreementRecord() {
     }
 
-    public Path(String agreementFolderName, String fullPath) {
+    public AgreementRecord(String agreementFolderName, String fullPath) {
         this.agreementFolderName = agreementFolderName;
         this.fullPath = fullPath;
     }

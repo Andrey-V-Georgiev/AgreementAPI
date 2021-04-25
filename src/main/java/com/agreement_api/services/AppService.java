@@ -10,4 +10,6 @@ public interface AppService {
     String findAgreementAsJSON(String agreementFolderName) throws IOException;
 
     String storeInput(AgreementBindingModel agreementBindingModel) throws IOException, URISyntaxException;
+
+    String findReferencesForAllAgreementRecords() throws IOException;
 }

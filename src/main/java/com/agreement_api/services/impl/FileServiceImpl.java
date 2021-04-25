@@ -41,11 +41,14 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void writeFile(String content, String filePath) throws IOException {
-        Files.write(
-                Paths.get(filePath),
-                Collections.singleton(content),
-                StandardCharsets.UTF_8
-        );
+        File file = new File(filePath);
+        if (!file.exists()) {
+            Files.write(
+                    Paths.get(filePath),
+                    Collections.singleton(content),
+                    StandardCharsets.UTF_8
+            );
+        }
     }
 
     @Override

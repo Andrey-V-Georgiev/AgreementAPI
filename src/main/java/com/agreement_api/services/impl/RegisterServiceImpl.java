@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -31,10 +27,15 @@ public class RegisterServiceImpl implements RegisterService {
     /* Infrastructure */
 
     @Override
+    public void createRootFolderRegister() throws IOException {
+        String fullPath = String.format("%s\\%s", GlobalConstants.ROOT_FOLDER_PATH, GlobalConstants.REGISTER_ROOT_FOLDER_TXT);
+        this.fileService.writeFile(GlobalConstants.BLANK, fullPath);
+    }
+
+    @Override
     public void createRegisterInfrastructure(String agreementFilePath, String dirPath) throws IOException {
         this.createAgreementRegister(agreementFilePath, dirPath);
         this.createProductsRegister(dirPath);
-        this.createMappingRegister(dirPath);
     }
 
     /* Agreement register */
@@ -48,6 +49,12 @@ public class RegisterServiceImpl implements RegisterService {
     public void createAgreementRegister(String agreementFilePath, String dirPath) throws IOException {
         String fullPath = String.format("%s\\%s", dirPath, GlobalConstants.REGISTER_AGREEMENT_TXT);
         this.fileService.writeFile(agreementFilePath, fullPath);
+    }
+
+    @Override
+    public void signAgreementRecordToRootRegister(String agreementFolderName) throws IOException, URISyntaxException {
+        String fullPath = String.format("%s\\%s", GlobalConstants.ROOT_FOLDER_PATH, GlobalConstants.REGISTER_ROOT_FOLDER_TXT);
+        this.fileService.addLineToFile(agreementFolderName, fullPath);
     }
 
     /* Products register */
@@ -75,42 +82,5 @@ public class RegisterServiceImpl implements RegisterService {
     public void signProductToProductRegister(Product product) throws IOException, URISyntaxException {
         String productFilePath = this.pathService.generateProductFilePath(product);
         this.addToProductsRegister(productFilePath, product.getDirPath());
-    }
-
-
-    /* Mapping register */
-
-    @Override
-    public Map<String, String> getMappingRegister(String dirPath) throws IOException {
-        String mappingRegisterPath = String.format("%s\\%s", dirPath, GlobalConstants.REGISTER_OBJECTS_MAPPING_TXT);
-        List<String> mappingRegisterLines = this.fileService.readFileToLines(mappingRegisterPath);
-        Pattern pattern = Pattern.compile(GlobalConstants.REGISTER_OBJECTS_MAPPING_REGEX);
-        Map<String, String> mappingRegister = new HashMap<>();
-        for (String line : mappingRegisterLines) {
-            Matcher matcher = pattern.matcher(line);
-            if (matcher.find()) {
-                mappingRegister.put(matcher.group(1), matcher.group(2));
-            }
-        }
-        return mappingRegister;
-    }
-
-    @Override
-    public void createMappingRegister(String dirPath) throws IOException {
-        String fullPath = String.format("%s\\%s", dirPath, GlobalConstants.REGISTER_OBJECTS_MAPPING_TXT);
-        this.fileService.writeFile(GlobalConstants.BLANK, fullPath);
-    }
-
-    @Override
-    public void addToMappingRegister(String fileId, String filePath, String dirPath) throws IOException, URISyntaxException {
-        String objectMappingRegisterPath = String.format("%s\\%s", dirPath, GlobalConstants.REGISTER_OBJECTS_MAPPING_TXT);
-        String mappingRow = String.format("[%s](%s)", fileId, filePath);
-        this.fileService.addLineToFile(mappingRow, objectMappingRegisterPath);
-    }
-
-    @Override
-    public void signProductToMappingRegister(Product product) throws IOException, URISyntaxException {
-        String productFilePath = this.pathService.generateProductFilePath(product);
-        this.addToMappingRegister(product.getId(), productFilePath, product.getDirPath());
     }
 }

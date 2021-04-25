@@ -8,6 +8,7 @@ public class AgreementAPIApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AgreementAPIApplication.class, args);
+        System.out.println("Application is running on port: 8080");
     }
 
 }

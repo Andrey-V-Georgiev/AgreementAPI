@@ -1,9 +1,10 @@
 package com.agreement_api.services.impl;
 
+import com.agreement_api.constants.GlobalConstants;
 import com.agreement_api.models.binding.AgreementBindingModel;
 import com.agreement_api.models.service.Agreement;
 import com.agreement_api.models.service.Identity;
-import com.agreement_api.models.service.Path;
+import com.agreement_api.models.service.AgreementRecord;
 import com.agreement_api.models.service.Product;
 import com.agreement_api.services.*;
 import com.agreement_api.utils.IdUtil;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -42,6 +44,12 @@ public class AppServiceImpl implements AppService {
         this.gson = gson;
         this.agreementService = agreementService;
         this.productService = productService;
+    }
+
+    @PostConstruct
+    private void createRootFolderOnDiskC() throws IOException {
+         this.fileService.createDir(GlobalConstants.ROOT_FOLDER_PATH);
+         this.registerService.createRootFolderRegister();
     }
 
     @Override
@@ -88,12 +96,22 @@ public class AppServiceImpl implements AppService {
         /* Store products to file system as human readable files */
         this.storeProductsToFileSystem(agreement.getProducts(), 0, agreement);
 
-
-
         /* Construct JSON response */
-        Path path = new Path(agreement.getId(), agreementFilePath);
-        String pathJson = this.gson.toJson(path);
-        return pathJson;
+        AgreementRecord agreementRecord = new AgreementRecord(agreement.getId(), agreementFilePath);
+
+        /* Sign agreement record to register */
+        this.registerService.signAgreementRecordToRootRegister(agreementRecord.getAgreementFolderName());
+
+        String agreementRecordJSON = this.gson.toJson(agreementRecord);
+        return agreementRecordJSON;
+    }
+
+    @Override
+    public String findReferencesForAllAgreementRecords() throws IOException {
+        String fullPath = String.format("%s\\%s", GlobalConstants.ROOT_FOLDER_PATH, GlobalConstants.REGISTER_ROOT_FOLDER_TXT);
+        List<String> references = this.fileService.readFileToLines(fullPath);
+        String referencesJSON = this.gson.toJson(references);
+        return referencesJSON;
     }
 
     private void storeProductsToFileSystem(List<Product> products, int index, Identity parent) throws IOException, URISyntaxException {
@@ -108,8 +126,6 @@ public class AppServiceImpl implements AppService {
 
         /* Sign product to mapping and product registers */
         this.registerService.signProductToProductRegister(currentProduct);
-
-        this.registerService.signProductToMappingRegister(currentProduct);
 
         /* Get deeper */
         if (currentProduct.getProducts().size() > 0) {

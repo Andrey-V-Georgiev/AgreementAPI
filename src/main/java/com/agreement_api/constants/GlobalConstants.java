@@ -18,12 +18,8 @@ public class GlobalConstants {
     public static final String NO_PRODUCTS = "No products available\n";
 
     /* Register */
+    public static final String REGISTER_ROOT_FOLDER_TXT = "register-root-folder.txt";
     public static final String REGISTER_AGREEMENT_TXT = "register-agreement.txt";
     public static final String REGISTER_PRODUCTS_TXT = "register-products.txt";
-    public static final String REGISTER_OBJECTS_MAPPING_TXT = "register-objects-mapping.txt";
     public static final String BLANK = "";
-
-    /* Regex */
-    public static final String REGISTER_OBJECTS_MAPPING_REGEX = "\\[(.+)\\]\\((.+)\\)";
-
 }

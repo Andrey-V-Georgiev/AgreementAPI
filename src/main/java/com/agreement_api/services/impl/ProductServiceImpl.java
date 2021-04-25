@@ -35,9 +35,6 @@ public class ProductServiceImpl implements ProductService {
         /* Read products register to get paths */
         List<String> productsRegisterLines = this.registerService.getProductsRegister(dirPath);
 
-        /* Read mapping register to get register paths */
-        Map<String, String> mappingRegister = this.registerService.getMappingRegister(dirPath);
-
         /* Read every Product file by path */
         List<Product> products = new ArrayList<>();
 

@@ -34,9 +34,12 @@ public class AppController {
     public ResponseEntity<Object> findAgreementByFilePath(
             @PathVariable("agreement-folder-name") String agreementFolderName) throws IOException {
 
-        String agreementJSON = this.appService.findAgreementAsJSON(agreementFolderName);
-
-        return ResponseEntity.ok(agreementJSON);
+        try{
+            String agreementJSON = this.appService.findAgreementAsJSON(agreementFolderName);
+            return ResponseEntity.ok(agreementJSON);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping("/store")
@@ -45,14 +48,21 @@ public class AppController {
         AgreementBindingModel agreementBindingModel = this.gson.fromJson(inputJson, AgreementBindingModel.class);
         if (this.validationUtil.isValid(agreementBindingModel)) {
 
-            String pathJson = this.appService.storeInput(agreementBindingModel);
-            return ResponseEntity.ok(pathJson);
+            String agreementRecordJSON = this.appService.storeInput(agreementBindingModel);
+            return ResponseEntity.ok(agreementRecordJSON);
 
         } else {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         }
+    }
+
+    @GetMapping("/references-all")
+    public ResponseEntity<Object> findReferencesForAllAgreementRecords() throws IOException {
+
+        String referencesJSON = this.appService.findReferencesForAllAgreementRecords();
+        return ResponseEntity.ok(referencesJSON);
     }
 
 }
