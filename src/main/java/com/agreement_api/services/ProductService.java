@@ -8,6 +8,4 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> findFirstLevelProducts(String dirPath) throws IOException;
-
-    Product findProduct(String filePath) throws IOException;
 }

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findFirstLevelProducts(String dirPath) throws IOException {
-
 
         /* Read products register to get paths */
         List<String> productsRegisterLines = this.registerService.getProductsRegister(dirPath);
@@ -77,14 +75,6 @@ public class ProductServiceImpl implements ProductService {
 
         return productsFirstLevel;
     }
-
-    @Override
-    public Product findProduct(String filePath) throws IOException {
-        List<String> productFileLines = this.fileService.readFileToLines(filePath);
-        Product product = convertFileLinesToProductObject(productFileLines);
-        return product;
-    }
-
 
     private Product convertFileLinesToProductObject(List<String> productFileLines) {
         Product product = new Product();

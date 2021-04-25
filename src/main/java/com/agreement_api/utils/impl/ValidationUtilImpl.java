@@ -1,5 +1,6 @@
 package com.agreement_api.utils.impl;
 
+import com.agreement_api.models.binding.AgreementBindingModel;
 import com.agreement_api.utils.ValidationUtil;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +29,9 @@ public class ValidationUtilImpl implements ValidationUtil {
     }
 
     @Override
-    public <T> void printConstraintViolations(T entity) {
-        this.validator.validate(entity)
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .forEach(System.out::println);
+    public String violationsString(Set<ConstraintViolation<AgreementBindingModel>> violations) {
+        StringBuilder sb = new StringBuilder();
+        violations.forEach(violation -> sb.append(violation).append(System.lineSeparator()));
+        return sb.toString();
     }
 }

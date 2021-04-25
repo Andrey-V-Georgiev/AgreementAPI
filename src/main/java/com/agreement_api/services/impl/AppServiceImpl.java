@@ -23,7 +23,6 @@ import java.util.List;
 public class AppServiceImpl implements AppService {
 
     private final ModelMapper modelMapper;
-    private final ValidationUtil validationUtil;
     private final FileService fileService;
     private final IdUtil idUtil;
     private final PathService pathService;
@@ -34,9 +33,8 @@ public class AppServiceImpl implements AppService {
 
 
     @Autowired
-    public AppServiceImpl(ModelMapper modelMapper, ValidationUtil validationUtil, FileService fileService, IdUtil idUtil, PathService pathService, RegisterService registerService, Gson gson, AgreementService agreementService, ProductService productService) {
+    public AppServiceImpl(ModelMapper modelMapper, FileService fileService, IdUtil idUtil, PathService pathService, RegisterService registerService, Gson gson, AgreementService agreementService, ProductService productService) {
         this.modelMapper = modelMapper;
-        this.validationUtil = validationUtil;
         this.fileService = fileService;
         this.idUtil = idUtil;
         this.pathService = pathService;
@@ -48,8 +46,8 @@ public class AppServiceImpl implements AppService {
 
     @PostConstruct
     private void createRootFolderOnDiskC() throws IOException {
-         this.fileService.createDir(GlobalConstants.ROOT_FOLDER_PATH);
-         this.registerService.createRootFolderRegister();
+        this.fileService.createDir(GlobalConstants.ROOT_FOLDER_PATH);
+        this.registerService.createRootFolderRegister();
     }
 
     @Override
@@ -154,7 +152,7 @@ public class AppServiceImpl implements AppService {
     }
 
     private void setProductFields(Product product, Identity parent, String dirPath) throws IOException {
-        if(product.getId() == null) {
+        if (product.getId() == null) {
             /* Set IDs for nested products */
             product.setId(this.idUtil.generateID());
         }

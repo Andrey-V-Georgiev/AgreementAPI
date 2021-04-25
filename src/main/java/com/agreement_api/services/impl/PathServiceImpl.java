@@ -6,10 +6,6 @@ import com.agreement_api.models.service.Product;
 import com.agreement_api.services.PathService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class PathServiceImpl implements PathService {
     @Override
@@ -30,7 +26,6 @@ public class PathServiceImpl implements PathService {
     @Override
     public String generateProductFilePath(Product product) {
         /* First is productID separated by space and second is parentID */
-        //String fileNameProduct = String.format("%s__%s", product.getId(), product.getParent().getId());
         String fileNameProduct = String.format("%s__%s", product.getName(), product.getParent().getId());
         return String.format("%s\\%s.txt", product.getDirPath(), fileNameProduct);
     }

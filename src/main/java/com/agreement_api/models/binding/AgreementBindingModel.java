@@ -1,7 +1,9 @@
 package com.agreement_api.models.binding;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class AgreementBindingModel {
@@ -19,6 +21,8 @@ public class AgreementBindingModel {
         this.products = products;
     }
 
+    @NotBlank
+    @Length(min = 2)
     public String getName() {
         return name;
     }
@@ -27,6 +31,8 @@ public class AgreementBindingModel {
         this.name = name;
     }
 
+    @NotBlank
+    @Length(min = 2)
     public String getSignBy() {
         return signBy;
     }

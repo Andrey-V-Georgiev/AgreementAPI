@@ -18,14 +18,12 @@ import java.net.URISyntaxException;
 public class AppController {
 
     private final Gson gson;
-    private final ModelMapper modelMapper;
     private final ValidationUtil validationUtil;
     private final AppService appService;
 
     @Autowired
-    public AppController(Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil, AppService appService) {
+    public AppController(Gson gson, ValidationUtil validationUtil, AppService appService) {
         this.gson = gson;
-        this.modelMapper = modelMapper;
         this.validationUtil = validationUtil;
         this.appService = appService;
     }
@@ -34,27 +32,24 @@ public class AppController {
     public ResponseEntity<Object> findAgreementByFilePath(
             @PathVariable("agreement-folder-name") String agreementFolderName) throws IOException {
 
-        try{
+        try {
             String agreementJSON = this.appService.findAgreementAsJSON(agreementFolderName);
             return ResponseEntity.ok(agreementJSON);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Agreement not found");
         }
     }
 
     @PostMapping("/store")
-    public ResponseEntity<Object> storeInput(@RequestBody String inputJson) throws IOException, URISyntaxException {
+    public ResponseEntity<Object> storeInput(
+            @RequestBody String inputJson) throws IOException, URISyntaxException {
 
         AgreementBindingModel agreementBindingModel = this.gson.fromJson(inputJson, AgreementBindingModel.class);
         if (this.validationUtil.isValid(agreementBindingModel)) {
-
             String agreementRecordJSON = this.appService.storeInput(agreementBindingModel);
             return ResponseEntity.ok(agreementRecordJSON);
-
         } else {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Agreement validation");
         }
     }
 

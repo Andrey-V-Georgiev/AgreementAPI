@@ -1,7 +1,12 @@
 package com.agreement_api.models.binding;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,8 @@ public class ProductBindingModel {
         this.products = new ArrayList<>(products);
     }
 
+    @NotBlank
+    @Length(min = 2)
     public String getName() {
         return name;
     }
@@ -29,6 +36,7 @@ public class ProductBindingModel {
         this.name = name;
     }
 
+    @DecimalMin(value = "0")
     public BigDecimal getPrice() {
         return price;
     }
